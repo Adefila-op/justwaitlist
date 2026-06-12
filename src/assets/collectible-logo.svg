@@ -1,0 +1,10 @@
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <!-- Top-left: Dark -->
+  <rect x="0" y="0" width="100" height="100" fill="#1a1410" rx="16"/>
+  <!-- Top-right: Light -->
+  <rect x="100" y="0" width="100" height="100" fill="#c9c7c1" rx="16"/>
+  <!-- Bottom-left: Light -->
+  <rect x="0" y="100" width="100" height="100" fill="#c9c7c1" rx="16"/>
+  <!-- Bottom-right: Dark -->
+  <rect x="100" y="100" width="100" height="100" fill="#1a1410" rx="16"/>
+</svg>
