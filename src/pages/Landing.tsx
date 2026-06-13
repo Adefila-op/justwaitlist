@@ -199,6 +199,14 @@ export default function Landing() {
             <span className="text-[15px] font-semibold text-white">COllectible</span>
           </a>
           <div className="flex items-center gap-4 md:gap-7">
+            {minted && (
+              <a
+                href="https://collectibles.pics/explore"
+                className="text-[13px] font-medium text-white/80 transition hover:text-white"
+              >
+                Marketplace
+              </a>
+            )}
             <button
               type="button"
               onClick={openSubstack}
@@ -221,16 +229,34 @@ export default function Landing() {
         <div className="relative z-10 mx-auto grid w-full max-w-7xl flex-1 grid-cols-1 items-center gap-10 px-6 py-12 md:grid-cols-2 md:px-10">
           <div>
             <h1 className="mb-6 font-sans text-[40px] font-bold leading-[1.04] tracking-normal text-white md:text-[56px]">
-              Buy resellable
-              <br />
-              artworks <span style={{ color: "#8cbeff" }}>directly</span>
-              <br />
-              from artists
+              {minted ? (
+                <>
+                  Refer, Earn and buy
+                  <br />
+                  Popular Sol collection
+                  <br />
+                  with Earn funds
+                </>
+              ) : (
+                <>
+                  Buy resellable
+                  <br />
+                  artworks <span style={{ color: "#8cbeff" }}>directly</span>
+                  <br />
+                  from artists
+                </>
+              )}
             </h1>
             <p className="mb-2 text-base leading-[1.65] text-white/65">
-              Verified provenance. Transparent ownership.
-              <br />
-              Stronger resale value.
+              {minted ? (
+                "Opening Art to glaobal liquidity through verfied provenance"
+              ) : (
+                <>
+                  Verified provenance. Transparent ownership.
+                  <br />
+                  Stronger resale value.
+                </>
+              )}
             </p>
             <p className="mb-8 max-w-xl text-[15px] leading-[1.65] text-white/40">
               COllectible is the provenance infrastructure for overlooked art
