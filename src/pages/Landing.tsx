@@ -109,16 +109,38 @@ export default function Landing() {
 
   async function connectWallet() {
     setWalletErr(null);
-    if (!window.ethereum) {
-      setWalletErr(
-        "No wallet detected. Install MetaMask or another EVM wallet to continue.",
-      );
-      return;
+
+    // Try desktop wallet first (MetaMask, etc.)
+    if (window.ethereum) {
+      try {
+        const accs = await window.ethereum.request({
+          method: "eth_requestAccounts",
+        });
+        if (accs && accs[0]) {
+          setWallet(accs[0]);
+          if (myCode) {
+            await linkWallet({ code: myCode, wallet: accs[0] });
+          }
+        }
+        return;
+      } catch (e) {
+        console.error("Desktop wallet error:", e);
+        setWalletErr(
+          e instanceof Error ? e.message : "Failed to connect wallet.",
+        );
+        return;
+      }
     }
+
+    // Fall back to WalletConnect for mobile
     try {
-      const accs = await window.ethereum.request({
-        method: "eth_requestAccounts",
+      const WalletConnectProvider = (
+        await import("@walletconnect/web3-provider")
+      ).default;
+      const provider = new WalletConnectProvider({
+        infuraId: "8043bb2cf99347b1bfadfb3c02b541fc",
       });
+      const accs = await provider.enable();
       if (accs && accs[0]) {
         setWallet(accs[0]);
         if (myCode) {
@@ -127,8 +149,9 @@ export default function Landing() {
       }
     } catch (e) {
       setWalletErr(
-        e instanceof Error ? e.message : "Failed to connect wallet.",
+        "No wallet found. Install MetaMask or scan WalletConnect QR code.",
       );
+      console.error("WalletConnect error:", e);
     }
   }
 
@@ -137,10 +160,12 @@ export default function Landing() {
     setReadSubstack(true);
     if (myCode) {
       try {
+        console.log("📤 Marking Substack as opened for code:", myCode);
         await markSubstackOpened({ code: myCode });
+        console.log("✅ Substack opened marked successfully");
         refresh(myCode);
-      } catch {
-        // best-effort
+      } catch (err) {
+        console.error("❌ Failed to mark Substack opened:", err);
       }
     }
   }
