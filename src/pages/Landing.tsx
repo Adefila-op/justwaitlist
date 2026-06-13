@@ -241,12 +241,43 @@ export default function Landing() {
               <div className="max-w-md space-y-4">
                 <div className="rounded-2xl border border-white/15 bg-white/[0.06] p-6 backdrop-blur">
                   <div className="text-lg font-semibold">Minted ✨</div>
-                  <p className="mt-1 text-sm text-white/65">
+                  <p className="mt-3 text-sm text-white/65">
                     Phase 1 reserved for{" "}
                     <span className="text-white">
                       {wallet ? shortAddr(wallet) : "—"}
                     </span>
-                    . Keep sharing your link — referrals still count.
+                  </p>
+                  
+                  {/* Referral Count */}
+                  <div className="mt-4 rounded-lg border border-blue-400/20 bg-blue-400/5 p-3">
+                    <div className="text-xs text-blue-200 uppercase tracking-wider">
+                      👥 Referrals
+                    </div>
+                    <div className="mt-1 text-2xl font-bold text-blue-300">
+                      {referrals}
+                    </div>
+                  </div>
+
+                  {/* Referral Link */}
+                  <div className="mt-3 space-y-2">
+                    <div className="text-xs text-white/50 uppercase tracking-wider">
+                      Share link
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <code className="flex-1 truncate rounded bg-white/5 px-3 py-2 text-xs text-white/70 font-mono">
+                        {referralLink}
+                      </code>
+                      <button
+                        onClick={copyReferral}
+                        className="rounded bg-white/10 px-3 py-2 text-xs font-medium text-white hover:bg-white/20 transition"
+                      >
+                        {copied ? "✓" : "Copy"}
+                      </button>
+                    </div>
+                  </div>
+
+                  <p className="mt-3 text-xs text-white/50">
+                    Keep sharing — referrals still count toward rewards!
                   </p>
                 </div>
 
