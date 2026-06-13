@@ -1,0 +1,18 @@
+{
+  "name": "wallet-waitlist",
+  "version": "1.0.0",
+  "description": "Wallet Waitlist - Vite + React + Supabase",
+  "buildCommand": "npm run build",
+  "startCommand": "npm run preview",
+  "outputDirectory": "dist",
+  "nodeVersion": "20",
+  "env": {
+    "VITE_SUPABASE_URL": {
+      "description": "Supabase project URL"
+    },
+    "VITE_SUPABASE_PUBLISHABLE_KEY": {
+      "description": "Supabase publishable key"
+    }
+  },
+  "framework": "vite-react"
+}
