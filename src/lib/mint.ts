@@ -18,6 +18,13 @@ function makeCode() {
   return Math.random().toString(36).slice(2, 8).toUpperCase();
 }
 
+/** Calculate rewards balance: $5 base + $0.2 per successful referral */
+export function calculateBalance(referralCount: number): number {
+  const BASE_REWARD = 5;
+  const REWARD_PER_REFERRAL = 0.2;
+  return BASE_REWARD + referralCount * REWARD_PER_REFERRAL;
+}
+
 /** Ensure a participant row exists for this visitor code. Optionally set referred_by. */
 export async function ensureParticipant(opts: {
   code?: string;

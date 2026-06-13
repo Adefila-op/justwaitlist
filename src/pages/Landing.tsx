@@ -6,6 +6,7 @@ import {
   markSubstackOpened,
   getStats,
   mintPhase1,
+  calculateBalance,
 } from "@/lib/mint";
 
 const SUBSTACK_URL = "https://collectiblle.substack.com/publish/posts";
@@ -236,15 +237,44 @@ export default function Landing() {
             </p>
 
             {minted ? (
-              <div className="max-w-md rounded-2xl border border-white/15 bg-white/[0.06] p-6 backdrop-blur">
-                <div className="text-lg font-semibold">Minted ✨</div>
-                <p className="mt-1 text-sm text-white/65">
-                  Phase 1 reserved for{" "}
-                  <span className="text-white">
-                    {wallet ? shortAddr(wallet) : "—"}
-                  </span>
-                  . Keep sharing your link — referrals still count.
-                </p>
+              <div className="max-w-md space-y-4">
+                <div className="rounded-2xl border border-white/15 bg-white/[0.06] p-6 backdrop-blur">
+                  <div className="text-lg font-semibold">Minted ✨</div>
+                  <p className="mt-1 text-sm text-white/65">
+                    Phase 1 reserved for{" "}
+                    <span className="text-white">
+                      {wallet ? shortAddr(wallet) : "—"}
+                    </span>
+                    . Keep sharing your link — referrals still count.
+                  </p>
+                </div>
+
+                {/* Rewards Balance */}
+                <div className="rounded-2xl border border-emerald-400/30 bg-emerald-400/5 p-6 backdrop-blur">
+                  <div className="mb-4 flex items-center justify-between">
+                    <div className="text-xs uppercase tracking-wider text-emerald-200">
+                      💎 Rewards Balance
+                    </div>
+                    <div className="text-2xl font-bold text-emerald-300">
+                      ${calculateBalance(referrals).toFixed(2)}
+                    </div>
+                  </div>
+                  <div className="space-y-2">
+                    <div className="flex justify-between text-sm text-white/70">
+                      <span>Base Reward</span>
+                      <span className="text-white">$5.00</span>
+                    </div>
+                    <div className="flex justify-between text-sm text-white/70">
+                      <span>Referrals: {referrals}</span>
+                      <span className="text-emerald-300">
+                        +${(referrals * 0.2).toFixed(2)}
+                      </span>
+                    </div>
+                  </div>
+                  <p className="mt-4 text-xs text-white/50">
+                    Use your rewards to buy artwork on our marketplace
+                  </p>
+                </div>
               </div>
             ) : (
               <form
