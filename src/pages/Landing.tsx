@@ -6,7 +6,6 @@ import {
   markSubstackOpened,
   getStats,
   mintPhase1,
-  calculateBalance,
 } from "@/lib/mint";
 
 const SUBSTACK_URL = "https://collectiblle.substack.com/publish/posts";
@@ -36,12 +35,14 @@ export default function Landing() {
   const [minting, setMinting] = useState(false);
   const [myCode, setMyCode] = useState<string>("");
   const [referrals, setReferrals] = useState<number>(0);
+  const [balance, setBalance] = useState<number>(5.0);
   const [copied, setCopied] = useState(false);
 
   const refresh = useCallback(async (code: string) => {
     try {
       const stats = await getStats({ code });
       setReferrals(stats.referrals);
+      if (stats.me?.balance) setBalance(stats.me.balance);
       if (stats.me?.substack_opened) setReadSubstack(true);
       if (stats.me?.minted) setMinted(true);
       if (stats.me?.wallet) setWallet(stats.me.wallet);
@@ -256,7 +257,7 @@ export default function Landing() {
                       💎 Rewards Balance
                     </div>
                     <div className="text-2xl font-bold text-emerald-300">
-                      ${calculateBalance(referrals).toFixed(2)}
+                      ${balance.toFixed(2)}
                     </div>
                   </div>
                   <div className="space-y-2">

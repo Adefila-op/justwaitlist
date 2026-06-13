@@ -118,7 +118,7 @@ export async function getStats(opts: { code: string }) {
   const [{ data: me }, { count }] = await Promise.all([
     supabase
       .from("participants")
-      .select("code, wallet, substack_opened, minted, referred_by")
+      .select("code, wallet, substack_opened, minted, referred_by, balance, referral_count")
       .eq("code", opts.code)
       .maybeSingle(),
     supabase
@@ -150,9 +150,19 @@ export async function mintPhase1(opts: { code: string; wallet: string }) {
     .eq("substack_opened", true);
   if ((count ?? 0) < 2) throw new Error("Need 2 referrals to mint");
 
+  // Calculate balance and store referral count at mint time
+  const referralCount = count ?? 0;
+  const balance = calculateBalance(referralCount);
+
   const { error } = await supabase
     .from("participants")
-    .update({ minted: true, minted_at: new Date().toISOString(), wallet })
+    .update({ 
+      minted: true, 
+      minted_at: new Date().toISOString(), 
+      wallet,
+      referral_count: referralCount,
+      balance: balance
+    })
     .eq("code", opts.code);
   if (error) throw new Error(error.message);
 
@@ -168,6 +178,8 @@ export type DashboardRow = {
   referred_by: string | null;
   created_at: string;
   referrals: number;
+  referral_count: number;
+  balance: number;
 };
 
 /** Dashboard read — list of all participants with their referral counts. */
@@ -175,7 +187,7 @@ export async function listDashboard(): Promise<DashboardRow[]> {
   const { data: rows, error } = await supabase
     .from("participants")
     .select(
-      "code, wallet, substack_opened, minted, minted_at, referred_by, created_at",
+      "code, wallet, substack_opened, minted, minted_at, referred_by, created_at, referral_count, balance",
     )
     .order("created_at", { ascending: false })
     .limit(500);
@@ -190,5 +202,7 @@ export async function listDashboard(): Promise<DashboardRow[]> {
   return (rows ?? []).map((r) => ({
     ...r,
     referrals: credits.get(r.code) ?? 0,
+    referral_count: r.referral_count ?? 0,
+    balance: r.balance ?? 5.00,
   }));
 }

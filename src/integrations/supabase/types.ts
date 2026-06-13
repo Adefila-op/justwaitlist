@@ -18,6 +18,8 @@ export type Database = {
           referred_by: string | null
           substack_opened: boolean
           wallet: string | null
+          referral_count: number
+          balance: number
         }
         Insert: {
           code: string
@@ -27,6 +29,8 @@ export type Database = {
           referred_by?: string | null
           substack_opened?: boolean
           wallet?: string | null
+          referral_count?: number
+          balance?: number
         }
         Update: {
           code?: string
@@ -36,6 +40,8 @@ export type Database = {
           referred_by?: string | null
           substack_opened?: boolean
           wallet?: string | null
+          referral_count?: number
+          balance?: number
         }
         Relationships: [
           {
